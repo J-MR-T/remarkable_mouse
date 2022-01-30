@@ -9,6 +9,7 @@ import struct
 from getpass import getpass
 from itertools import cycle
 
+
 import paramiko
 import paramiko.agent
 
@@ -121,6 +122,7 @@ def main():
         parser.add_argument('--region', action='store_true', default=False, help="Use a GUI to position the output area. Overrides --monitor")
         parser.add_argument('--threshold', metavar='THRESH', default=600, type=int, help="stylus pressure threshold (default 600)")
         parser.add_argument('--evdev', action='store_true', default=False, help="use evdev to support pen pressure (requires root, Linux only)")
+        parser.add_argument('--button-on-rubber', default="left", choices=['left','middle','right'], help="which button is pressed when the marker plus rubber is detected")
 
         args = parser.parse_args()
 
@@ -154,6 +156,7 @@ def main():
             region=args.region,
             threshold=args.threshold,
             mode=args.mode,
+            button_on_rubber=args.button_on_rubber,
         )
 
     except PermissionError:

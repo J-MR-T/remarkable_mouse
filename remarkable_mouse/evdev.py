@@ -76,7 +76,7 @@ def create_local_device():
     return device.create_uinput_device()
 
 
-def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode):
+def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode, button_on_rubber):
     """Pipe rM evdev events to local device
 
     Args:

@@ -14,7 +14,7 @@ log = logging.getLogger('remouse')
 # finger_width = 767
 # finger_height = 1023
 
-def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode):
+def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode, button_on_rubber):
     """Loop forever and map evdev events to mouse
 
     Args:
@@ -35,6 +35,16 @@ def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode)
     log.debug('Chose monitor: {}'.format(monitor))
 
     x = y = 0
+
+    which_button = Button.left
+    
+    if button_on_rubber == 'middle':
+        button_on_rubber = Button.middle
+    elif button_on_rubber == 'right':
+        button_on_rubber = Button.right
+    else:
+        button_on_rubber = Button.left
+
 
     while True:
         _, _, e_type, e_code, e_value = struct.unpack('2IHHi', rm_inputs['pen'].read(16))
@@ -59,10 +69,19 @@ def read_tablet(rm_inputs, *, orientation, monitor_num, region, threshold, mode)
             log.debug('\t\t{}'.format(e.value))
             if e.value == 1:
                 log.debug('PRESS')
-                mouse.press(Button.left)
+                mouse.press(which_button)
             else:
                 log.debug('RELEASE')
-                mouse.release(Button.left)
+                mouse.release(which_button)
+
+        # handle different buttons
+        if e.matches(EV_KEY.BTN_TOOL_PEN):
+            which_button = Button.left
+            log.debug('PEN')
+        elif e.matches(EV_KEY.BTN_TOOL_RUBBER):
+            which_button = button_on_rubber
+            log.debug('RUBBER')
+
 
         if e.matches(EV_SYN):
             mapped_x, mapped_y = remap(
