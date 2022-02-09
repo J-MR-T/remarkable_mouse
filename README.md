@@ -1,3 +1,14 @@
+# Why fork?
+
+TL;DR: I'm not a fan of python and only wanted to hack in some functionality and will probably rewrite it in another language if I find time to do so. But my hacky python code should most likely not make it into upstream master.
+
+## How to use this fork
+(untested, this is solely based on something I found in my zsh history):
+
+This *might* work: `python -m pip install git+https://github.com/J-MR-T/remarkable_mouse.git#master`
+
+No guarantees though.
+
 # remarkable_mouse
 
 Use your reMarkable as a graphics tablet.
